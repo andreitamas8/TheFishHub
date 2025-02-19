@@ -38,7 +38,7 @@ import {
   setPersonalDataTrue,
   updateBackendPersonalData,
 } from "../../redux/userSlice";
-import { getCategoryName } from "../../assets";
+import { getCategoryName, handleRouteChange } from "../../assets";
 
 const navigation = {
   categories: [],
@@ -73,6 +73,15 @@ export function Headerv2() {
   const localCart = localStorage.getItem("cart");
   const [isUpdating, setIsUpdating] = useState(false);
   let close = useClose();
+  function handleLogout(e) {
+    e.preventDefault();
+    dispatch(logout());
+    dispatch(clearCart());
+    console.log("log");
+    localStorage.removeItem("token");
+    localStorage.removeItem("userId");
+    localStorage.setItem("cart", []);
+  }
   //fetching and updating data from Backend
   const fetchCartData = async () => {
     const userId = localStorage.getItem("userId");
@@ -153,15 +162,7 @@ export function Headerv2() {
   useEffect(() => {
     updateCartData();
   }, [cartItems, dispatch]);
-  function handleLogout(e) {
-    e.preventDefault();
-    dispatch(logout());
-    dispatch(clearCart());
-    console.log("log");
-    localStorage.removeItem("token");
-    localStorage.removeItem("userId");
-    localStorage.setItem("cart", []);
-  }
+
   // subcategories
   useEffect(() => {
     if (data) {
@@ -196,8 +197,6 @@ export function Headerv2() {
   const handleSubcategoryRouteChange = (category, subcategory) =>
     navigate(`/category/${category}/${subcategory}`);
   const handleLogoRouteChange = () => navigate(`/`);
-  const handleLoginRouteChange = () => navigate("/login");
-  const handleCartOpen = () => dispatch(openCart());
   function handleCreateAccountRouteChange(e) {
     e.preventDefault();
     const timer = setTimeout(() => handlePopoverClose(), 300);
@@ -227,8 +226,23 @@ export function Headerv2() {
               <PopoverMenu
                 data={data}
                 categories={categories}
-                onCategoryRouteChange={handleCategoryRouteChange}
-                onSubcategoryRouteChange={handleSubcategoryRouteChange}
+                onCategoryRouteChange={(category) =>
+                  handleRouteChange(
+                    navigate,
+                    handleCategoryRouteChange,
+                    null,
+                    category
+                  )
+                }
+                onSubcategoryRouteChange={(category, subcategory) =>
+                  handleRouteChange(
+                    navigate,
+                    handleSubcategoryRouteChange,
+                    null,
+                    category,
+                    subcategory
+                  )
+                }
               />
               <div className="flex">
                 <div className="absolute left-1/2 bottom-1/6 -translate-x-1/2 cursor-pointer lg:relative lg:left-[0px] lg:translate-[0px] lg:ml-3">
@@ -267,7 +281,10 @@ export function Headerv2() {
                                             transition
                                             onClick={(e) => {
                                               e.preventDefault();
-                                              handleSubcategoryRouteChange(
+                                              handleRouteChange(
+                                                navigate,
+                                                handleSubcategoryRouteChange,
+                                                close,
                                                 category,
                                                 section
                                               );
@@ -295,15 +312,13 @@ export function Headerv2() {
                     <div className="hidden lg:flex lg:justify-between lg:gap-5">
                       <div
                         className="font-medium text-gray-700 cursor-pointer"
-                        onClick={(e) => {
-                          e.preventDefault();
-                          const timer = setTimeout(
-                            () => handlePopoverClose(),
-                            300
-                          );
-                          navigate("/accountInfo");
-                          return () => clearTimeout(timer);
-                        }}
+                        onClick={(e) =>
+                          handleRouteChange(
+                            navigate,
+                            () => navigate("/accountInfo"),
+                            close
+                          )
+                        }
                       >
                         <p>
                           <span className=" text-center items-center  font-medium text-gray-700 cursor-pointer text-sm">
@@ -314,22 +329,16 @@ export function Headerv2() {
                     </div>
                   ) : (
                     <>
-                      {/* NavLink
-                        onClick={handleLoginRouteChange}
-                        className="block p-2 font-medium text-gray-900"
-                      >
-                        Sign in
-                      </NavLink>
-                      <NavLink
-                        onClick={handleCreateAccountRouteChange}
-                        className="block p-2 font-medium text-gray-900"
-                      >
-                        Create account
-                      </NavLink> */}
                       <div className="ml-auto flex items-center">
                         <div className="hidden lg:flex lg:flex-1 lg:items-center lg:justify-end lg:space-x-6 ">
                           <a
-                            onClick={handleLoginRouteChange}
+                            onClick={() =>
+                              handleRouteChange(
+                                navigate,
+                                () => navigate("/login"),
+                                close
+                              )
+                            }
                             className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
                           >
                             Sign in
@@ -339,7 +348,14 @@ export function Headerv2() {
                             className="h-6 w-px bg-gray-200"
                           />
                           <a
-                            onClick={handleCreateAccountRouteChange}
+                            onClick={(e) =>
+                              handleRouteChange(
+                                navigate,
+                                handleCreateAccountRouteChange,
+                                close,
+                                e
+                              )
+                            }
                             className="text-sm font-medium text-gray-700 hover:text-gray-800 cursor-pointer"
                           >
                             Create account
@@ -357,7 +373,7 @@ export function Headerv2() {
                         className="flex p-2 text-center items-center font-medium text-gray-700 cursor-pointer text-sm"
                         onClick={handleLogout}
                       >
-                        <ArrowRightEndOnRectangleIcon className="size-6 text-gray-400 hover:text-gray-500" />
+                        <ArrowRightEndOnRectangleIcon className="hidden size-6 text-gray-400 hover:text-gray-500 lg:flex" />
                       </div>
                     ) : null}
 

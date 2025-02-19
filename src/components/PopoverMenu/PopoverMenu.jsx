@@ -15,11 +15,8 @@ import {
 } from "@heroicons/react/24/outline";
 import { NavLink, useNavigate } from "react-router-dom";
 import { motion, AnimatePresence } from "framer-motion";
-
 import { getCategoryName } from "../../assets";
 import { closePopover, openPopover } from "../../redux/popoverMenuSlice";
-import { logout } from "../../redux/userSlice";
-import { clearCart } from "../../redux/cartItemsSlice";
 
 export function PopoverMenu({
   onCategoryRouteChange,
@@ -27,20 +24,21 @@ export function PopoverMenu({
 }) {
   const navigate = useNavigate();
   const dispatch = useDispatch();
+
   const isOpen = useSelector((state) => state.popoverMenu.isOpen);
   const subcategories = useSelector((state) => state.subcategories);
   const isAuthenticated = useSelector((state) => state.user?.isAuthenticated);
   const userName = useSelector((state) => state.user?.name);
 
-  function handlePopoverOpen() {
-    dispatch(openPopover());
-  }
+  const handlePopoverOpen = () => dispatch(openPopover());
+  const handlePopoverClose = () => dispatch(closePopover());
 
-  function handlePopoverClose() {
-    // Close after animation
-    dispatch(closePopover());
-  }
-
+  const handleRouteChange = (callback, ...args) => {
+    setTimeout(() => {
+      handlePopoverClose();
+      callback(...args);
+    }, 300);
+  };
   function handleLogout(e) {
     e.preventDefault();
     dispatch(logout());
@@ -51,37 +49,15 @@ export function PopoverMenu({
     localStorage.setItem("cart", []);
   }
 
-  function handleCategoryRouteChange(category) {
-    const timer = setTimeout(() => handlePopoverClose(), 300);
-    onCategoryRouteChange(category);
-    return () => clearTimeout(timer);
-  }
-  function handleSubcategoryRouteChange(category, subcategory) {
-    const timer = setTimeout(() => handlePopoverClose(), 300);
-    onSubcategoryRouteChange(category, subcategory);
-    return () => clearTimeout(timer);
-  }
-  function handleLoginRouteChange(e) {
-    e.preventDefault();
-    const timer = setTimeout(() => handlePopoverClose(), 300);
-    navigate("/login");
-    return () => clearTimeout(timer);
-  }
-  function handleCreateAccountRouteChange(e) {
-    e.preventDefault();
-    const timer = setTimeout(() => handlePopoverClose(), 300);
-    navigate("/signup");
-    return () => clearTimeout(timer);
-  }
-
   const menuVariants = {
-    hidden: { x: "-100%" }, // Start off-screen to the right
-    visible: { x: "0%", transition: { duration: 0.3, ease: "easeInOut" } }, // Slide in
-    exit: { x: "-100%", transition: { duration: 0.3, ease: "easeInOut" } }, // Slide out
+    hidden: { x: "-100%" },
+    visible: { x: "0%", transition: { duration: 0.3, ease: "easeInOut" } },
+    exit: { x: "-100%", transition: { duration: 0.3, ease: "easeInOut" } },
   };
 
   return (
     <>
+      {/* Menu Button */}
       <button
         type="button"
         onClick={handlePopoverOpen}
@@ -91,15 +67,13 @@ export function PopoverMenu({
         <Bars3Icon aria-hidden="true" className="size-6" />
       </button>
 
+      {/* Menu Dialog */}
       <Dialog
         open={isOpen}
         onClose={() => {}}
         className="relative z-40 lg:hidden"
       >
-        <DialogBackdrop
-          transition
-          className="fixed inset-0 bg-gray-700/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0"
-        />
+        <DialogBackdrop className="fixed inset-0 bg-gray-700/75 transition-opacity duration-500 ease-in-out data-closed:opacity-0" />
 
         <div className="fixed inset-0 z-40 flex">
           <AnimatePresence>
@@ -110,16 +84,14 @@ export function PopoverMenu({
                 animate="visible"
                 exit="exit"
                 onAnimationComplete={() => {
-                  if (!isOpen) {
-                    // Only dispatch close when animation has finished
-                    dispatch(closePopover());
-                  }
+                  if (!isOpen) dispatch(closePopover());
                 }}
                 className="relative flex w-full max-w-xs flex-col overflow-y-auto bg-white pb-12 shadow-xl"
               >
                 <DialogPanel>
+                  {/* Close Button */}
                   <button
-                    onClick={() => handlePopoverClose()}
+                    onClick={handlePopoverClose}
                     className="m-4 p-2 text-gray-400 rounded-md"
                   >
                     <XMarkIcon className="size-6" />
@@ -135,10 +107,12 @@ export function PopoverMenu({
                               <>
                                 <DisclosureButton className="flex w-full justify-between py-2 text-base font-medium text-gray-900 hover:bg-gray-50 rounded-lg">
                                   <span
-                                    onClick={(e) => {
-                                      e.stopPropagation();
-                                      handleCategoryRouteChange(category);
-                                    }}
+                                    onClick={() =>
+                                      handleRouteChange(
+                                        onCategoryRouteChange,
+                                        category
+                                      )
+                                    }
                                   >
                                     {getCategoryName(category)}
                                   </span>
@@ -155,7 +129,8 @@ export function PopoverMenu({
                                         key={subcat}
                                         className="block w-full text-left py-2 pl-6 text-sm font-medium text-gray-900 hover:bg-gray-50 rounded-lg"
                                         onClick={() =>
-                                          handleSubcategoryRouteChange(
+                                          handleRouteChange(
+                                            onSubcategoryRouteChange,
                                             category,
                                             subcat
                                           )
@@ -186,15 +161,9 @@ export function PopoverMenu({
                       <div className="flex justify-between">
                         <div
                           className="font-medium"
-                          onClick={(e) => {
-                            e.preventDefault();
-                            const timer = setTimeout(
-                              () => handlePopoverClose(),
-                              300
-                            );
-                            navigate("/accountInfo");
-                            return () => clearTimeout(timer);
-                          }}
+                          onClick={() =>
+                            handleRouteChange(navigate, "/accountInfo")
+                          }
                         >
                           <p>
                             <span className="text-md">Hello </span>
@@ -212,13 +181,15 @@ export function PopoverMenu({
                     ) : (
                       <>
                         <NavLink
-                          onClick={handleLoginRouteChange}
+                          onClick={(e) => handleRouteChange(navigate, "/login")}
                           className="block p-2 font-medium text-gray-900"
                         >
                           Sign in
                         </NavLink>
                         <NavLink
-                          onClick={handleCreateAccountRouteChange}
+                          onClick={(e) =>
+                            handleRouteChange(navigate, "/signup")
+                          }
                           className="block p-2 font-medium text-gray-900"
                         >
                           Create account

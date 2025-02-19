@@ -3,16 +3,15 @@ import { useSelector } from "react-redux";
 
 const CartSyncWithLocalStorage = () => {
   const cartItems = useSelector((state) => state.cartItems);
-  const userId = localStorage.getItem("userId"); // Assuming you store user ID in state
+  const userId = localStorage.getItem("userId");
 
   useEffect(() => {
     if (userId) {
-      // Sync the cart with local storage if the user is logged in
       localStorage.setItem("cart", JSON.stringify(cartItems));
     }
-  }, [cartItems, userId]); // Only update when the cart items or userId change
+  }, [cartItems, userId]);
 
-  return null; // This component does not render anything
+  return null;
 };
 
 export default CartSyncWithLocalStorage;

@@ -104,9 +104,6 @@ export function BannerSlider({ banners }) {
                   <p className="mt-2 lg:mt-4 text-sm sm:text-sm md:text-base xl:text-lg xl:text-2xl 2xl:text-5xl">
                     {img.brand}
                   </p>
-                  {/* <div className="absolute">
-                  <ColorButton variant="contained">Check it out</ColorButton>
-                </div> */}
                 </div>
               )}
             </div>

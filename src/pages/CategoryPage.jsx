@@ -3,10 +3,8 @@ import { useFetch } from "../hooks";
 import { SubcategoryCard, Loader } from "../components";
 import { getCategoryName } from "../assets";
 import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
 import { getUrl } from "../api/data";
 import { motion } from "framer-motion";
-import { initializeSubcategories } from "../redux/subcategoriesSlice";
 
 export function CategoryPage() {
   const navigate = useNavigate();

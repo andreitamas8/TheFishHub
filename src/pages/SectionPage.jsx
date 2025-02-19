@@ -2,12 +2,10 @@ import { useNavigate, useParams } from "react-router-dom";
 import { useFetch } from "../hooks";
 import { Loader, ProductCard, SubcategorySlider } from "../components";
 import { getCategoryName } from "../assets";
-import { useDispatch, useSelector } from "react-redux";
-import { useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { getUrl } from "../api/data";
 
 import { motion } from "framer-motion";
-import { initializeSubcategories } from "../redux/subcategoriesSlice";
 
 export function SectionPage() {
   const productsUrl = getUrl();
@@ -15,7 +13,7 @@ export function SectionPage() {
   const { category, subcategory } = useParams();
   const dispatch = useDispatch();
 
-  const { data, loading, error } = useFetch(productsUrl);
+  const { data, loading } = useFetch(productsUrl);
 
   const categoryData = data ? data[category] : [];
 

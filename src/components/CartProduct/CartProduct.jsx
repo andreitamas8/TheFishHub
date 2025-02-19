@@ -1,18 +1,15 @@
 import { useDispatch, useSelector } from "react-redux";
 import { removeItemFromCart } from "../../redux/cartItemsSlice";
-import { useEffect } from "react";
 import { capitalizeFirstLetter } from "../../assets";
 
 export function CartProduct({ product }) {
   const dispatch = useDispatch();
-  const cartItems = useSelector((state) => state.cartItems);
-  const userId = localStorage.getItem("userId");
 
   const removeFromCart = (productId) => {
-    dispatch(removeItemFromCart(productId)); // Remove item from cart in Redux state
+    dispatch(removeItemFromCart(productId));
   };
   function handleRemoveClick(id) {
-    removeFromCart(id); // Calls remove from cart, triggering the effect above
+    removeFromCart(id);
   }
 
   return (

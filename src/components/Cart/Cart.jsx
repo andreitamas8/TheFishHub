@@ -1,6 +1,5 @@
 import { useDispatch, useSelector } from "react-redux";
 import { CartProduct } from "../CartProduct/CartProduct";
-import { capitalizeFirstLetter } from "../../assets";
 import {
   selectTotalDiscountedPrice,
   selectTotalPrice,

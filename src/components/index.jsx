@@ -1,4 +1,3 @@
-export * from "./Header/Header";
 export * from "./Header/Headerv2";
 export * from "./BannerSlider/BannerSlider";
 export * from "./ProductSlider/ProductSlider";
@@ -19,3 +18,8 @@ export * from "./OrderForm/OrderForm";
 export * from "./PersonalDataForm/PersonalDataForm";
 export * from "./PersonalInfoCard/PersonalInfoCard";
 export * from "./SearchProduct/SearchProduct";
+export * from "./CartSyncWithLocalStorage/CartSyncWithLocalStorage";
+export * from "./CircularProgress/CircularProgress";
+export * from "./Modal/Modal";
+export * from "./PopoverMenu/PopoverMenu";
+export * from "./Search/Search";
