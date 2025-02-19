@@ -1,0 +1,54 @@
+.banner-container .dotAnimation {
+  position: relative;
+  background-color: #f8fafc;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  transition: background-color 0.5s ease-in-out, transform 0.5s ease-in-out;
+  transform: scale(1);
+}
+
+.banner-container .dotAnimation:hover {
+  background-color: #365314;
+  transform: scale(1, 1);
+}
+
+.banner-container .slick-active .dotAnimation {
+  background-color: #365314;
+  transform: scale(1, 1);
+}
+.banner-container .slick-slide img {
+  transition: opacity 2s;
+  opacity: 0.5;
+}
+.banner-container .slick-slide p {
+  transition: opacity 2s;
+  opacity: 0.5;
+}
+.banner-container .slick-slide.slick-center img,
+.banner-container .slick-slide.slick-center.slick-cloned img {
+  opacity: 1;
+  transition: opacity 2s;
+}
+.banner-container .slick-slide.slick-center p,
+.banner-container .slick-slide.slick-center.slick-cloned p {
+  opacity: 1;
+  transition: opacity 2s;
+}
+
+.banner-container .slick-slide {
+  position: relative;
+}
+/* .slick-active .slideGrow {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+}
+.slick-active .slideGrow:hover,
+.slick-active .slideGrow:focus,
+.slick-active .slideGrow:active {
+  transition-property: all;
+  transition-timing-function: cubic-bezier(0.4, 0, 0.2, 1);
+  transition-duration: 500ms;
+  transform: scale(1.02);
+} */

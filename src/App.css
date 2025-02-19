@@ -1,0 +1,57 @@
+@import "tailwindcss";
+@theme {
+  --color-offwhite: oklch(97.07% 0.0027 286.35);
+
+  --color-dark-green: oklch(38.41% 0.0671 155.94);
+  --color-dark-green-75: oklch(38.41% 0.0671 155.94 / 75%);
+  --color-dark-green-50: oklch(38.41% 0.0671 155.94 / 50%);
+  --color-dark-green-25: oklch(38.41% 0.0671 155.94 / 25%);
+  --color-dark-green-5: oklch(38.41% 0.0671 155.94 / 5%);
+
+  --color-very-light-green: oklch(95.73% 0.0313 163.25);
+  --color-very-light-green-75: oklch(95.73% 0.0313 163.25 / 75%);
+  --color-very-light-green-50: oklch(95.73% 0.0313 163.25 / 50%);
+  --color-very-light-green-25: oklch(95.73% 0.0313 163.25 / 25%);
+  --color-very-light-green-5: oklch(95.73% 0.0313 163.25 / 5%);
+
+  --color-silver: oklch(84.83% 0 0);
+  --color-silver-75: oklch(84.83% 0 0 / 75%);
+  --color-silver-50: oklch(84.83% 0 0 / 50%);
+  --color-silver-25: oklch(84.83% 0 0 / 25%);
+  --color-silver-5: oklch(84.83% 0 0 / 5%);
+
+  --color-charcoal-blue: oklch(37.45% 0.0391 263.09);
+  --color-charcoal-blue-75: oklch(37.45% 0.0391 263.09 / 75%);
+  --color-charcoal-blue-50: oklch(37.45% 0.0391 263.09 / 50%);
+  --color-charcoal-blue-25: oklch(37.45% 0.0391 263.09 / 25%);
+  --color-charcoal-blue-5: oklch(37.45% 0.0391 263.09 / 5%);
+
+  --color-oxford-blue: oklch(20.77% 0.0726 257.86);
+  --color-oxford-blue-75: oklch(20.77% 0.0726 257.86 / 75%);
+  --color-oxford-blue-50: oklch(20.77% 0.0726 257.86 / 50%);
+  --color-oxford-blue-25: oklch(20.77% 0.0726 257.86 / 25%);
+  --color-oxford-blue-5: oklch(20.77% 0.0726 257.86 / 5%);
+
+  --inset-shadow-md: inset 0 2px 3px rgba(0, 0, 0, 0.25);
+  --font-display: "Poppins";
+
+  --breakpoint-xs: 420px;
+}
+@layer utilities {
+  .no-scrollbar::-webkit-scrollbar {
+    display: none;
+  }
+
+  .no-scrollbar {
+    -ms-overflow-style: none;
+    scrollbar-width: none;
+  }
+  .animate-spin-slow {
+    animation: spin 3s linear infinite;
+  }
+}
+@layer base {
+  :root {
+    --grid-rows-auto-auto-1fr: auto auto 1fr;
+  }
+}
